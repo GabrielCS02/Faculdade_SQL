@@ -1,0 +1,62 @@
+CREATE DATABASE db_faculdade;
+USE db_faculdade;
+
+
+CREATE TABLE tb_aluno (
+    id_aluno INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    dt_nascimento DATE,
+    cpf VARCHAR(11) UNIQUE NOT NULL,
+    endereco VARCHAR(255),
+    matricula VARCHAR(20) UNIQUE NOT NULL,
+    curso_id INT,
+    FOREIGN KEY (curso_id) REFERENCES tb_curso(id_curso)
+);
+
+
+CREATE TABLE tb_professor (
+    id_professor INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(11) UNIQUE NOT NULL,
+    especialidade VARCHAR(100)
+);
+
+
+CREATE TABLE tb_curso (
+    id_curso INT AUTO_INCREMENT PRIMARY KEY,
+    nome_curso VARCHAR(100) NOT NULL,
+    carga_horaria INT NOT NULL
+);
+
+
+CREATE TABLE tb_disciplina (
+    id_disciplina INT AUTO_INCREMENT PRIMARY KEY,
+    nome_disciplina VARCHAR(100) NOT NULL,
+    carga_horaria INT NOT NULL,
+    professor_id INT,
+    curso_id INT,
+    FOREIGN KEY (professor_id) REFERENCES tb_professor(id_professor),
+    FOREIGN KEY (curso_id) REFERENCES tb_curso(id_curso)
+);
+
+
+CREATE TABLE tb_matricula (
+    id_matricula INT AUTO_INCREMENT PRIMARY KEY,
+    aluno_id INT,
+    disciplina_id INT,
+    semestre VARCHAR(6),
+    nota_final DECIMAL(5, 2),
+    presenca DECIMAL(5, 2),
+    FOREIGN KEY (aluno_id) REFERENCES tb_aluno(id_aluno),
+    FOREIGN KEY (disciplina_id) REFERENCES tb_disciplina(id_disciplina)
+);
+
+
+CREATE TABLE tb_turma (
+    id_turma INT AUTO_INCREMENT PRIMARY KEY,
+    disciplina_id INT,
+    professor_id INT,
+    semestre VARCHAR(6),
+    FOREIGN KEY (disciplina_id) REFERENCES tb_disciplina(id_disciplina),
+    FOREIGN KEY (professor_id) REFERENCES tb_professor(id_professor)
+);
